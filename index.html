@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HackSim - Hacker Simulator</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix-bg"></canvas>
+
+    <!-- CRT Overlay -->
+    <div id="crt-overlay"></div>
+
+    <!-- Boot Screen -->
+    <div id="boot-screen">
+        <pre id="boot-text"></pre>
+    </div>
+
+    <!-- Name Input Screen -->
+    <div id="name-screen" class="hidden">
+        <pre id="name-ascii"></pre>
+        <div id="name-prompt">
+            <span class="text-green">[?] Ingresa tu handle de hacker: </span>
+            <input type="text" id="name-input" maxlength="20" autocomplete="off" spellcheck="false">
+        </div>
+        <p class="text-dim" style="margin-top:1rem; font-size: 0.8rem;">Presiona ENTER para confirmar</p>
+    </div>
+
+    <!-- Main Game Screen -->
+    <div id="game-screen" class="hidden">
+        <!-- HUD Bar -->
+        <div id="hud">
+            <div id="hud-left">
+                <span id="hud-name" class="text-accent">guest</span>
+                <span class="text-dim"> | </span>
+                <span class="text-green">Lvl </span><span id="hud-level">1</span>
+                <span class="text-dim"> | </span>
+                <span class="text-warning">Rank: </span><span id="hud-rank">Newbie</span>
+            </div>
+            <div id="hud-center">
+                <span class="text-dim">XP: </span>
+                <div id="xp-bar-container">
+                    <div id="xp-bar"></div>
+                    <span id="xp-text">0/100</span>
+                </div>
+            </div>
+            <div id="hud-right">
+                <span id="hud-credits" class="text-warning">0 ₿TC</span>
+                <span class="text-dim"> | </span>
+                <span id="hud-mission" class="text-accent">Sin misión</span>
+            </div>
+        </div>
+
+        <!-- Terminal -->
+        <div id="terminal">
+            <div id="terminal-output"></div>
+            <div id="terminal-input-line">
+                <span id="prompt-text">guest@hacknet:~$ </span>
+                <div id="input-wrapper">
+                    <input type="text" id="terminal-input" autocomplete="off" spellcheck="false" autofocus>
+                    <span id="cursor" class="blink">█</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <!-- Level Up Overlay -->
+    <div id="levelup-overlay" class="hidden">
+        <div id="levelup-content">
+            <pre id="levelup-ascii" class="text-accent"></pre>
+            <h2 class="text-green glitch-text">LEVEL UP!</h2>
+            <p id="levelup-info"></p>
+        </div>
+    </div>
+
+    <!-- Achievement Overlay -->
+    <div id="achievement-overlay" class="hidden">
+        <div id="achievement-content">
+            <span id="achievement-icon"></span>
+            <span id="achievement-text"></span>
+        </div>
+    </div>
+
+    <!-- Scripts (order matters) -->
+    <script src="js/sound.js"></script>
+    <script src="js/gameState.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/terminal.js"></script>
+    <script src="js/network.js"></script>
+    <script src="js/shop.js"></script>
+    <script src="js/achievements.js"></script>
+    <script src="js/missions.js"></script>
+    <script src="js/commands.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

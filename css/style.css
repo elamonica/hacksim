@@ -1,0 +1,607 @@
+/* ============================================
+   HackSim - Retro Hacker Terminal CSS
+   ============================================ */
+
+/* === CSS Variables === */
+:root {
+    --color-bg: #0a0a0a;
+    --color-bg-light: #111111;
+    --color-text: #00ff41;
+    --color-text-dim: #00aa2a;
+    --color-text-dark: #005500;
+    --color-accent: #00ffff;
+    --color-accent-dim: #007777;
+    --color-warning: #ff9900;
+    --color-error: #ff0040;
+    --color-success: #00ff41;
+    --color-purple: #bf00ff;
+    --color-hud-bg: rgba(0, 20, 0, 0.85);
+    --color-border: #003300;
+    --font-terminal: 'Courier New', 'Lucida Console', 'Consolas', monospace;
+    --glow-green: 0 0 5px rgba(0, 255, 65, 0.4);
+    --glow-cyan: 0 0 5px rgba(0, 255, 255, 0.4);
+    --glow-warning: 0 0 5px rgba(255, 153, 0, 0.4);
+    --scanline-opacity: 0.04;
+}
+
+/* === Reset === */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* === Base === */
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-terminal);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* === Matrix Rain Background === */
+#matrix-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.06;
+    pointer-events: none;
+}
+
+/* === CRT Overlay (Scanlines + Vignette) === */
+#crt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, var(--scanline-opacity)) 0px,
+        rgba(0, 0, 0, var(--scanline-opacity)) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+}
+
+#crt-overlay::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        ellipse at center,
+        transparent 60%,
+        rgba(0, 0, 0, 0.4) 100%
+    );
+}
+
+/* === Utility Classes === */
+.hidden { display: none !important; }
+.text-green { color: var(--color-text); }
+.text-dim { color: var(--color-text-dim); }
+.text-dark { color: var(--color-text-dark); }
+.text-accent { color: var(--color-accent); text-shadow: var(--glow-cyan); }
+.text-warning { color: var(--color-warning); text-shadow: var(--glow-warning); }
+.text-error { color: var(--color-error); text-shadow: 0 0 5px rgba(255, 0, 64, 0.4); }
+.text-success { color: var(--color-success); text-shadow: var(--glow-green); }
+.text-purple { color: var(--color-purple); text-shadow: 0 0 5px rgba(191, 0, 255, 0.4); }
+.text-bold { font-weight: bold; }
+.text-white { color: #cccccc; }
+
+/* === Boot Screen === */
+#boot-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 500;
+    background: var(--color-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+#boot-text {
+    font-size: 13px;
+    color: var(--color-text);
+    text-shadow: var(--glow-green);
+    white-space: pre;
+    line-height: 1.3;
+    max-width: 800px;
+}
+
+/* === Name Screen === */
+#name-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 499;
+    background: var(--color-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+#name-ascii {
+    font-size: 10px;
+    color: var(--color-accent);
+    text-shadow: var(--glow-cyan);
+    margin-bottom: 2rem;
+    text-align: center;
+    line-height: 1.1;
+}
+
+#name-prompt {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+}
+
+#name-input {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--color-text);
+    color: var(--color-accent);
+    font-family: var(--font-terminal);
+    font-size: 18px;
+    padding: 4px 8px;
+    outline: none;
+    width: 200px;
+    text-shadow: var(--glow-cyan);
+    caret-color: var(--color-text);
+}
+
+#name-input:focus {
+    border-bottom-color: var(--color-accent);
+    box-shadow: 0 2px 0 var(--color-accent-dim);
+}
+
+/* === Game Screen === */
+#game-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+}
+
+/* === HUD === */
+#hud {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    background: var(--color-hud-bg);
+    border-bottom: 1px solid var(--color-border);
+    font-size: 13px;
+    flex-shrink: 0;
+    z-index: 20;
+    min-height: 38px;
+}
+
+#hud-left, #hud-center, #hud-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+#hud-center {
+    flex: 1;
+    justify-content: center;
+    max-width: 300px;
+}
+
+/* XP Bar */
+#xp-bar-container {
+    position: relative;
+    width: 150px;
+    height: 14px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-text-dark);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-left: 6px;
+}
+
+#xp-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--color-text-dark), var(--color-text));
+    transition: width 0.5s ease;
+    box-shadow: var(--glow-green);
+}
+
+#xp-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 9px;
+    color: var(--color-text);
+    text-shadow: 0 0 3px rgba(0,0,0,1);
+    white-space: nowrap;
+}
+
+/* === Terminal === */
+#terminal {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 12px 16px;
+    overflow: hidden;
+}
+
+#terminal-output {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 8px;
+    word-wrap: break-word;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-text-dark) transparent;
+}
+
+#terminal-output::-webkit-scrollbar {
+    width: 6px;
+}
+
+#terminal-output::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#terminal-output::-webkit-scrollbar-thumb {
+    background: var(--color-text-dark);
+    border-radius: 3px;
+}
+
+#terminal-output .line {
+    min-height: 1.4em;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+/* Terminal Input */
+#terminal-input-line {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding-top: 4px;
+    border-top: 1px solid var(--color-border);
+}
+
+#prompt-text {
+    color: var(--color-text);
+    text-shadow: var(--glow-green);
+    white-space: nowrap;
+    user-select: none;
+}
+
+#input-wrapper {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#terminal-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--color-accent);
+    font-family: var(--font-terminal);
+    font-size: 14px;
+    outline: none;
+    caret-color: transparent;
+    text-shadow: var(--glow-cyan);
+    padding: 0;
+}
+
+/* Cursor */
+#cursor {
+    color: var(--color-text);
+    font-size: 14px;
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.blink {
+    animation: blink-animation 1s step-end infinite;
+}
+
+@keyframes blink-animation {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* === Toast Notifications === */
+#toast-container {
+    position: fixed;
+    top: 50px;
+    right: 16px;
+    z-index: 900;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+}
+
+.toast {
+    background: rgba(0, 20, 0, 0.95);
+    border: 1px solid var(--color-text);
+    padding: 10px 16px;
+    font-size: 13px;
+    color: var(--color-text);
+    border-radius: 4px;
+    animation: toast-in 0.3s ease, toast-out 0.3s ease 3s forwards;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+    max-width: 350px;
+}
+
+.toast.toast-warning {
+    border-color: var(--color-warning);
+    color: var(--color-warning);
+    box-shadow: 0 0 15px rgba(255, 153, 0, 0.2);
+}
+
+.toast.toast-error {
+    border-color: var(--color-error);
+    color: var(--color-error);
+    box-shadow: 0 0 15px rgba(255, 0, 64, 0.2);
+}
+
+.toast.toast-achievement {
+    border-color: var(--color-purple);
+    color: var(--color-purple);
+    box-shadow: 0 0 15px rgba(191, 0, 255, 0.3);
+}
+
+.toast.toast-accent {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+@keyframes toast-in {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes toast-out {
+    from { opacity: 1; }
+    to { opacity: 0; transform: translateY(-20px); }
+}
+
+/* === Level Up Overlay === */
+#levelup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 800;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+#levelup-content {
+    text-align: center;
+    padding: 2rem;
+}
+
+#levelup-ascii {
+    font-size: 12px;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+}
+
+#levelup-content h2 {
+    font-size: 2.5rem;
+    letter-spacing: 0.3em;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 20px rgba(0, 255, 65, 0.6), 0 0 40px rgba(0, 255, 65, 0.3);
+}
+
+#levelup-info {
+    font-size: 1.1rem;
+    color: var(--color-accent);
+}
+
+/* === Achievement Overlay === */
+#achievement-overlay {
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 850;
+    animation: achievementSlide 0.5s ease, toast-out 0.5s ease 3s forwards;
+}
+
+#achievement-content {
+    background: rgba(0, 0, 0, 0.95);
+    border: 2px solid var(--color-purple);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    box-shadow: 0 0 25px rgba(191, 0, 255, 0.3);
+    border-radius: 4px;
+}
+
+#achievement-icon {
+    font-size: 24px;
+}
+
+#achievement-text {
+    color: var(--color-purple);
+    text-shadow: 0 0 5px rgba(191, 0, 255, 0.4);
+}
+
+@keyframes achievementSlide {
+    from { transform: translateX(-50%) translateY(-50px); opacity: 0; }
+    to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+/* === Glitch Effect === */
+.glitch-text {
+    position: relative;
+}
+
+.glitch-active {
+    animation: glitch 0.3s ease infinite;
+}
+
+@keyframes glitch {
+    0% { text-shadow: 2px 0 var(--color-error), -2px 0 var(--color-accent); }
+    25% { text-shadow: -2px 0 var(--color-error), 2px 0 var(--color-accent); }
+    50% { text-shadow: 2px 2px var(--color-error), -2px -2px var(--color-accent); }
+    75% { text-shadow: -2px -1px var(--color-error), 2px 1px var(--color-accent); }
+    100% { text-shadow: 2px 0 var(--color-error), -2px 0 var(--color-accent); }
+}
+
+/* === Flicker Animation === */
+@keyframes flicker {
+    0%, 100% { opacity: 1; }
+    92% { opacity: 1; }
+    93% { opacity: 0.8; }
+    94% { opacity: 1; }
+    96% { opacity: 0.9; }
+    97% { opacity: 1; }
+}
+
+body {
+    animation: flicker 8s infinite;
+}
+
+/* === Fade In === */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* === Progress Bar (for commands like scan, crack) === */
+.progress-bar {
+    display: inline-block;
+    width: 200px;
+    height: 12px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-text-dark);
+    position: relative;
+    vertical-align: middle;
+    margin-left: 8px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--color-text);
+    transition: width 0.1s linear;
+}
+
+/* === ASCII Table styling (for shop, missions) === */
+.ascii-table {
+    color: var(--color-text-dim);
+}
+
+.ascii-table .header {
+    color: var(--color-accent);
+    text-shadow: var(--glow-cyan);
+}
+
+.ascii-table .row-available {
+    color: var(--color-text);
+}
+
+.ascii-table .row-locked {
+    color: var(--color-text-dark);
+}
+
+.ascii-table .row-owned {
+    color: var(--color-text-dim);
+}
+
+/* === Typing Animation === */
+.typing-line {
+    overflow: hidden;
+    border-right: 2px solid var(--color-text);
+    animation: typing-cursor 0.7s step-end infinite;
+}
+
+@keyframes typing-cursor {
+    0%, 100% { border-color: var(--color-text); }
+    50% { border-color: transparent; }
+}
+
+/* === Selection === */
+::selection {
+    background: var(--color-text-dark);
+    color: var(--color-accent);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    html, body {
+        font-size: 12px;
+    }
+
+    #hud {
+        flex-wrap: wrap;
+        padding: 6px 10px;
+        gap: 4px;
+    }
+
+    #hud-center {
+        order: 3;
+        max-width: none;
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    #xp-bar-container {
+        width: 120px;
+    }
+
+    #terminal {
+        padding: 8px;
+    }
+
+    #name-ascii {
+        font-size: 6px;
+    }
+
+    #boot-text {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    #hud-right {
+        display: none;
+    }
+}
